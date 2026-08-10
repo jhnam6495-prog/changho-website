@@ -58,7 +58,7 @@ export default function Header() {
         >
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
             <img src="/images/brand/logo.jpg" alt="창호종합건설 로고" style={{ height: 34, width: "auto", borderRadius: 4, flexShrink: 0 }} />
-            <div className="mob-hide">
+            <div>
               <div style={{
                 fontFamily: "var(--font-sans)", fontSize: 15, fontWeight: 800,
                 color: scrolled ? "var(--navy-900)" : "#fff", lineHeight: 1.25, transition: "color 0.3s", whiteSpace: "nowrap",

@@ -47,7 +47,7 @@ export default function SectionTabs({ sections }: { sections: SubItem[] }) {
       }}
     >
       <div
-        className="mob-pad"
+        className="mob-pad scroll-hide"
         style={{
           maxWidth: 1200, margin: "0 auto", padding: "0 24px",
           display: "flex", gap: 4, overflowX: "auto",

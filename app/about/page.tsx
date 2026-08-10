@@ -105,9 +105,10 @@ export default function AboutPage() {
                 ))}
                 <div style={{ fontSize: 46, color: "var(--orange)", fontWeight: 800, lineHeight: 0.5, textAlign: "right" }}>&rdquo;</div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 12, marginTop: 24 }}>
-                  <p style={{ fontWeight: 700, color: "var(--navy-950)", fontFamily: "var(--font-sans)", margin: 0 }}>
-                    창호종합건설(주) 대표이사 &nbsp; 이 진 규
-                  </p>
+                  <div style={{ textAlign: "right", fontWeight: 700, color: "var(--navy-950)", fontFamily: "var(--font-sans)", lineHeight: 1.6 }}>
+                    <div>창호종합건설(주)</div>
+                    <div style={{ whiteSpace: "nowrap" }}>대표이사 &nbsp;이 진 규</div>
+                  </div>
                   <Image
                     src="/images/brand/ceo_sign.JPG"
                     alt="대표이사 서명"

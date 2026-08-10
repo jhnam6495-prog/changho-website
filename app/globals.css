@@ -111,6 +111,16 @@ a {
   color: var(--navy-900);
 }
 
+/* 가로 스크롤은 되지만 스크롤바는 숨김 (탭 메뉴 등) */
+.scroll-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* 모바일 공통 유틸리티 */
 @media (max-width: 768px) {
   .mob-col {
