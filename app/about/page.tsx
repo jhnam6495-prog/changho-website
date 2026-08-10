@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PageHero from "../components/PageHero";
@@ -102,9 +103,19 @@ export default function AboutPage() {
                 ].map((p, i) => (
                   <p key={i} style={{ color: "var(--text-sub)", fontSize: 16, lineHeight: 1.9, marginBottom: 16, fontFamily: "var(--font-sans)", fontWeight: 300 }}>{p}</p>
                 ))}
-                <p style={{ textAlign: "right", fontWeight: 700, color: "var(--navy-950)", marginTop: 28, fontFamily: "var(--font-sans)" }}>
-                  창호종합건설(주) 대표이사 &nbsp; 이 진 규
-                </p>
+                <div style={{ fontSize: 46, color: "var(--orange)", fontWeight: 800, lineHeight: 0.5, textAlign: "right" }}>&rdquo;</div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 12, marginTop: 24 }}>
+                  <p style={{ fontWeight: 700, color: "var(--navy-950)", fontFamily: "var(--font-sans)", margin: 0 }}>
+                    창호종합건설(주) 대표이사 &nbsp; 이 진 규
+                  </p>
+                  <Image
+                    src="/images/brand/ceo_sign.JPG"
+                    alt="대표이사 서명"
+                    width={156}
+                    height={71}
+                    style={{ height: 44, width: "auto", objectFit: "contain" }}
+                  />
+                </div>
               </div>
             </div>
           </div>
