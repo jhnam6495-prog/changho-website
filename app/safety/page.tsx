@@ -4,8 +4,9 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PageHero from "../components/PageHero";
 import SectionTabs from "../components/SectionTabs";
+import CertificationGrid from "../components/CertificationGrid";
 import { safetySections } from "../nav-config";
-import { ShieldCheck, Search, Users, ClipboardCheck, ScrollText, CheckCircle2, FileText } from "lucide-react";
+import { ShieldCheck, Search, Users, ClipboardCheck, ScrollText, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "안전경영",
@@ -114,35 +115,7 @@ export default function SafetyPage() {
               <p style={{ color: "var(--text-sub)", fontSize: 15.5, fontFamily: "var(--font-sans)", fontWeight: 300, wordBreak: "keep-all" }}>2023년 품질·환경·안전보건 3개 분야 ISO 국제 인증을 획득하여 체계적으로 운영하고 있습니다.</p>
             </div>
 
-            <div className="mob-col" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
-              {certs.map((c) => (
-                <div key={c.code} style={{ background: "#fff", border: "1px solid var(--blue-line)", borderRadius: 14, overflow: "hidden", boxShadow: "0 2px 10px rgba(6,23,44,0.05)" }}>
-                  <div style={{ borderBottom: "1px solid var(--blue-line)", background: "var(--off-white)" }}>
-                    <iframe
-                      src={`${c.file}#toolbar=0`}
-                      title={`${c.code} 인증서`}
-                      width="100%"
-                      height="320"
-                      style={{ display: "block", border: 0 }}
-                      loading="lazy"
-                    />
-                  </div>
-                  <div style={{ padding: "22px 20px", textAlign: "center" }}>
-                    <div style={{ fontFamily: "var(--font-eng)", fontSize: 22, fontWeight: 800, color: "var(--navy-900)" }}>{c.code}</div>
-                    <div style={{ fontSize: 13.5, color: "var(--text-mute)", marginTop: 6, fontFamily: "var(--font-sans)" }}>{c.name}</div>
-                    <div style={{ fontSize: 12, color: "var(--orange-dark)", fontWeight: 700, marginTop: 10, fontFamily: "var(--font-sans)" }}>2023년 인증 획득</div>
-                    <a
-                      href={c.file}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 16, fontSize: 13, fontWeight: 700, color: "var(--blue-mid)", textDecoration: "none" }}
-                    >
-                      <FileText size={15} /> 인증서 원본 보기
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <CertificationGrid certs={certs} />
           </div>
         </section>
 
