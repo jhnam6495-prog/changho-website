@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import PageHero from "../components/PageHero";
 import SectionTabs from "../components/SectionTabs";
 import { safetySections } from "../nav-config";
-import { ShieldCheck, Search, Users, ClipboardCheck, ScrollText, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Search, Users, ClipboardCheck, ScrollText, CheckCircle2, FileText } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "안전경영",
@@ -21,9 +21,9 @@ const policies = [
 ];
 
 const certs = [
-  { code: "ISO 45001", name: "안전보건경영시스템" },
-  { code: "ISO 9001", name: "품질경영시스템" },
-  { code: "ISO 14001", name: "환경경영시스템" },
+  { code: "ISO 45001", name: "안전보건경영시스템", file: "/images/certifications/45001.pdf" },
+  { code: "ISO 9001", name: "품질경영시스템", file: "/images/certifications/9001.pdf" },
+  { code: "ISO 14001", name: "환경경영시스템", file: "/images/certifications/14001.pdf" },
 ];
 
 const system = [
@@ -116,10 +116,30 @@ export default function SafetyPage() {
 
             <div className="mob-col" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
               {certs.map((c) => (
-                <div key={c.code} style={{ background: "#fff", border: "1px solid var(--blue-line)", borderRadius: 14, padding: "26px 20px", textAlign: "center" }}>
-                  <div style={{ fontFamily: "var(--font-eng)", fontSize: 22, fontWeight: 800, color: "var(--navy-900)" }}>{c.code}</div>
-                  <div style={{ fontSize: 13.5, color: "var(--text-mute)", marginTop: 6, fontFamily: "var(--font-sans)" }}>{c.name}</div>
-                  <div style={{ fontSize: 12, color: "var(--orange-dark)", fontWeight: 700, marginTop: 10, fontFamily: "var(--font-sans)" }}>2023년 인증 획득</div>
+                <div key={c.code} style={{ background: "#fff", border: "1px solid var(--blue-line)", borderRadius: 14, overflow: "hidden", boxShadow: "0 2px 10px rgba(6,23,44,0.05)" }}>
+                  <div style={{ borderBottom: "1px solid var(--blue-line)", background: "var(--off-white)" }}>
+                    <iframe
+                      src={`${c.file}#toolbar=0`}
+                      title={`${c.code} 인증서`}
+                      width="100%"
+                      height="320"
+                      style={{ display: "block", border: 0 }}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div style={{ padding: "22px 20px", textAlign: "center" }}>
+                    <div style={{ fontFamily: "var(--font-eng)", fontSize: 22, fontWeight: 800, color: "var(--navy-900)" }}>{c.code}</div>
+                    <div style={{ fontSize: 13.5, color: "var(--text-mute)", marginTop: 6, fontFamily: "var(--font-sans)" }}>{c.name}</div>
+                    <div style={{ fontSize: 12, color: "var(--orange-dark)", fontWeight: 700, marginTop: 10, fontFamily: "var(--font-sans)" }}>2023년 인증 획득</div>
+                    <a
+                      href={c.file}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 16, fontSize: 13, fontWeight: 700, color: "var(--blue-mid)", textDecoration: "none" }}
+                    >
+                      <FileText size={15} /> 인증서 원본 보기
+                    </a>
+                  </div>
                 </div>
               ))}
             </div>
