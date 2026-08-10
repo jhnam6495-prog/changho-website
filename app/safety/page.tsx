@@ -22,9 +22,9 @@ const policies = [
 ];
 
 const certs = [
-  { code: "ISO 45001", name: "안전보건경영시스템", file: "/images/certifications/45001.pdf" },
-  { code: "ISO 9001", name: "품질경영시스템", file: "/images/certifications/9001.pdf" },
-  { code: "ISO 14001", name: "환경경영시스템", file: "/images/certifications/14001.pdf" },
+  { code: "ISO 45001", name: "안전보건경영시스템", image: "/images/certifications/45001.jpg", file: "/images/certifications/45001.pdf" },
+  { code: "ISO 9001", name: "품질경영시스템", image: "/images/certifications/9001.jpg", file: "/images/certifications/9001.pdf" },
+  { code: "ISO 14001", name: "환경경영시스템", image: "/images/certifications/14001.jpg", file: "/images/certifications/14001.pdf" },
 ];
 
 const system = [
