@@ -62,7 +62,7 @@ export default function Home() {
                 fontSize: 18, color: "#cfdcea", lineHeight: 1.75, maxWidth: 560,
                 fontFamily: "var(--font-sans)", fontWeight: 300, marginBottom: 34, wordBreak: "keep-all",
               }}>
-                2021년 설립 이래 건축·토목·인테리어·리모델링 전 분야에서 성실과 기술력으로 성장해 온 경상북도 경주의 종합건설사입니다.
+                2021년 설립 이래 건축·토목·인테리어·리모델링 전 분야에서 성실과 기술력으로 성장해 온 종합건설사입니다.
                 모든 공정의 시작과 끝은 안전이라는 원칙으로 현장을 운영합니다.
               </p>
               <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
