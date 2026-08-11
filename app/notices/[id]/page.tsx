@@ -37,7 +37,11 @@ export default async function NoticeDetailPage({
         <PageHero
           eng="NOTICE"
           title={notice.title}
-          desc={formatDate(notice.createdAt)}
+          desc={
+            notice.updatedAt && notice.updatedAt !== notice.createdAt
+              ? `${formatDate(notice.createdAt)} (수정됨 ${formatDate(notice.updatedAt)})`
+              : formatDate(notice.createdAt)
+          }
           breadcrumbs={[{ label: "홈", href: "/" }, { label: "공지사항", href: "/notices" }, { label: notice.title }]}
         />
 

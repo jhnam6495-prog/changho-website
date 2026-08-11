@@ -83,6 +83,72 @@ export async function createNotice(formData: FormData): Promise<void> {
   redirect("/admin/notices");
 }
 
+export async function updateNotice(formData: FormData): Promise<void> {
+  await requireAuth();
+
+  const id = String(formData.get("id") || "");
+  if (!id) redirect("/admin/notices");
+
+  const title = String(formData.get("title") || "").trim();
+  const content = String(formData.get("content") || "").trim();
+
+  if (!title) {
+    redirect(`/admin/notices/${id}/edit?error=title`);
+  }
+
+  const pathname = `${DATA_PREFIX}${id}.json`;
+  const meta = await head(pathname).catch(() => null);
+  if (!meta) redirect("/admin/notices");
+
+  const res = await fetch(meta.url, { cache: "no-store" });
+  const existing = (await res.json()) as Notice;
+
+  const removeUrls = new Set(formData.getAll("removeFiles").map(String));
+  const keptFiles = existing.files.filter((f) => !removeUrls.has(f.url));
+  const removedFiles = existing.files.filter((f) => removeUrls.has(f.url));
+
+  if (removedFiles.length) {
+    await del(removedFiles.map((f) => f.url));
+  }
+
+  const rawFiles = formData
+    .getAll("files")
+    .filter((f): f is File => f instanceof File && f.size > 0);
+
+  const usedNames = new Set(keptFiles.map((f) => f.name));
+  const newFiles: NoticeFile[] = [];
+
+  for (const file of rawFiles) {
+    const name = dedupeName(file.name, usedNames);
+    usedNames.add(name);
+
+    const blob = await put(`${FILES_PREFIX}${id}/${name}`, file, {
+      access: "public",
+      contentType: file.type || undefined,
+    });
+    newFiles.push({ name, url: blob.url, downloadUrl: blob.downloadUrl, size: file.size });
+  }
+
+  const updated: Notice = {
+    ...existing,
+    title,
+    content,
+    updatedAt: new Date().toISOString(),
+    files: [...keptFiles, ...newFiles],
+  };
+
+  await put(pathname, JSON.stringify(updated), {
+    access: "public",
+    contentType: "application/json",
+    allowOverwrite: true,
+  });
+
+  revalidatePath("/notices");
+  revalidatePath(`/notices/${id}`);
+  revalidatePath("/admin/notices");
+  redirect("/admin/notices");
+}
+
 export async function deleteNotice(formData: FormData): Promise<void> {
   await requireAuth();
 

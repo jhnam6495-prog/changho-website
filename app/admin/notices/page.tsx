@@ -124,6 +124,15 @@ export default async function AdminNoticesPage({
                 >
                   보기
                 </Link>
+                <Link
+                  href={`/admin/notices/${n.id}/edit`}
+                  style={{
+                    fontSize: 12.5, fontWeight: 600, color: "var(--navy-800)", textDecoration: "none",
+                    border: "1px solid var(--blue-line)", borderRadius: 6, padding: "6px 12px", fontFamily: "var(--font-sans)",
+                  }}
+                >
+                  수정
+                </Link>
                 <form action={deleteNotice}>
                   <input type="hidden" name="id" value={n.id} />
                   <DeleteButton />
