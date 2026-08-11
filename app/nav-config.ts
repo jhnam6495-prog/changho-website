@@ -49,4 +49,5 @@ export const nav: NavItem[] = [
   { label: "사업분야", href: "/business", sub: businessSections },
   { label: "공사실적", href: "/projects", sub: projectsSections },
   { label: "오시는길", href: "/contact", sub: contactSections },
+  { label: "공지사항", href: "/notices" },
 ];
