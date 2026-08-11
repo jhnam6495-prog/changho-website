@@ -3,6 +3,7 @@ import { list, head } from "@vercel/blob";
 export interface NoticeFile {
   name: string;
   url: string;
+  downloadUrl: string;
   size: number;
 }
 

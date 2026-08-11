@@ -58,7 +58,7 @@ export default async function NoticeDetailPage({
                     {notice.files.map((f) => (
                       <a
                         key={f.url}
-                        href={f.url}
+                        href={f.downloadUrl}
                         download={f.name}
                         style={{
                           display: "flex", alignItems: "center", gap: 10, padding: "12px 16px",

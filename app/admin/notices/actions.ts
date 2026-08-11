@@ -62,7 +62,7 @@ export async function createNotice(formData: FormData): Promise<void> {
       access: "public",
       contentType: file.type || undefined,
     });
-    files.push({ name, url: blob.url, size: file.size });
+    files.push({ name, url: blob.url, downloadUrl: blob.downloadUrl, size: file.size });
   }
 
   const notice: Notice = {
