@@ -10,6 +10,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [openSub, setOpenSub] = useState<string | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -78,9 +79,15 @@ export default function Header() {
           {(!mounted || !isMobile) && (
             <nav suppressHydrationWarning style={{ display: "flex", alignItems: "center", gap: 2 }}>
               {nav.map((item) => (
-                <div key={item.href} className="nav-item">
+                <div
+                  key={item.href}
+                  className="nav-item"
+                  onMouseEnter={() => setOpenDropdown(item.href)}
+                  onMouseLeave={() => setOpenDropdown(null)}
+                >
                   <Link
                     href={item.href}
+                    onClick={() => setOpenDropdown(null)}
                     style={{
                       color: scrolled ? "var(--text-sub)" : "rgba(255,255,255,0.88)",
                       textDecoration: "none",
@@ -93,9 +100,17 @@ export default function Header() {
                     {item.label}
                   </Link>
                   {item.sub && (
-                    <div className="nav-dropdown">
+                    <div
+                      className="nav-dropdown"
+                      style={{
+                        opacity: openDropdown === item.href ? 1 : 0,
+                        visibility: openDropdown === item.href ? "visible" : "hidden",
+                        pointerEvents: openDropdown === item.href ? "auto" : "none",
+                        transform: `translateX(-50%) translateY(${openDropdown === item.href ? 2 : 6}px)`,
+                      }}
+                    >
                       {item.sub.map((s) => (
-                        <Link key={s.id} href={`${item.href}#${s.id}`}>
+                        <Link key={s.id} href={`${item.href}#${s.id}`} onClick={() => setOpenDropdown(null)}>
                           {s.label}
                         </Link>
                       ))}

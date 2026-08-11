@@ -85,14 +85,6 @@ a {
   z-index: 550;
 }
 
-.nav-item:hover .nav-dropdown,
-.nav-item:focus-within .nav-dropdown {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateX(-50%) translateY(2px);
-}
-
 .nav-dropdown a {
   display: block;
   padding: 10px 14px;

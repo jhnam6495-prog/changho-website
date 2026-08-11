@@ -4,6 +4,7 @@ import { formatBytes, formatDate } from "../../lib/format";
 import { logout } from "../actions";
 import { createNotice, deleteNotice } from "./actions";
 import DeleteButton from "./DeleteButton";
+import FileInputButton from "./FileInputButton";
 
 export const dynamic = "force-dynamic";
 
@@ -71,8 +72,10 @@ export default async function AdminNoticesPage({
             }}
           />
 
-          <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 6, fontFamily: "var(--font-sans)" }}>첨부파일 (여러 개 선택 가능)</label>
-          <input type="file" name="files" multiple style={{ width: "100%", marginBottom: 20, fontFamily: "var(--font-sans)", fontSize: 13.5 }} />
+          <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 8, fontFamily: "var(--font-sans)" }}>첨부파일 (여러 개 선택 가능)</label>
+          <div style={{ marginBottom: 20 }}>
+            <FileInputButton id="new-notice-files" label="첨부파일 선택" />
+          </div>
 
           <button
             type="submit"

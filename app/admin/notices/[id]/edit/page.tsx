@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getNotice } from "../../../../lib/notices";
 import { formatBytes } from "../../../../lib/format";
 import { updateNotice } from "../../actions";
+import FileInputButton from "../../FileInputButton";
 
 export const dynamic = "force-dynamic";
 
@@ -81,10 +82,12 @@ export default async function EditNoticePage({
             </div>
           )}
 
-          <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 6, fontFamily: "var(--font-sans)" }}>
+          <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 8, fontFamily: "var(--font-sans)" }}>
             파일 추가 (여러 개 선택 가능)
           </label>
-          <input type="file" name="files" multiple style={{ width: "100%", marginBottom: 24, fontFamily: "var(--font-sans)", fontSize: 13.5 }} />
+          <div style={{ marginBottom: 24 }}>
+            <FileInputButton id="edit-notice-files" label="파일 추가" />
+          </div>
 
           <div style={{ display: "flex", gap: 10 }}>
             <button
