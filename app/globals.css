@@ -156,4 +156,15 @@ a {
   .mob-hide {
     display: none !important;
   }
+
+  .ov-label {
+    width: 92px !important;
+    padding: 12px 10px !important;
+    font-size: 12.5px !important;
+  }
+
+  .ov-value {
+    padding: 12px 10px !important;
+    font-size: 13px !important;
+  }
 }

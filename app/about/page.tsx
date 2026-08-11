@@ -139,8 +139,8 @@ export default function AboutPage() {
                 <tbody>
                   {overview.map((row) => (
                     <tr key={row.k} style={{ borderBottom: "1px solid var(--blue-line)" }}>
-                      <th style={{ width: 180, textAlign: "left", background: "var(--off-white)", color: "var(--navy-900)", fontWeight: 700, fontSize: 13.5, padding: "16px 18px", fontFamily: "var(--font-sans)" }}>{row.k}</th>
-                      <td style={{ textAlign: "left", padding: "16px 18px", fontSize: 14.5, color: "var(--text-sub)", fontFamily: "var(--font-sans)" }}>{row.v}</td>
+                      <th className="ov-label" style={{ width: 180, textAlign: "left", background: "var(--off-white)", color: "var(--navy-900)", fontWeight: 700, fontSize: 13.5, padding: "16px 18px", fontFamily: "var(--font-sans)" }}>{row.k}</th>
+                      <td className="ov-value" style={{ textAlign: "left", padding: "16px 18px", fontSize: 14.5, color: "var(--text-sub)", fontFamily: "var(--font-sans)" }}>{row.v}</td>
                     </tr>
                   ))}
                 </tbody>
