@@ -76,6 +76,7 @@ export async function createNotice(formData: FormData): Promise<void> {
   await put(`${DATA_PREFIX}${id}.json`, JSON.stringify(notice), {
     access: "public",
     contentType: "application/json",
+    cacheControlMaxAge: 60,
   });
 
   revalidatePath("/notices");
@@ -140,6 +141,7 @@ export async function updateNotice(formData: FormData): Promise<void> {
   await put(pathname, JSON.stringify(updated), {
     access: "public",
     contentType: "application/json",
+    cacheControlMaxAge: 60,
     allowOverwrite: true,
   });
 
