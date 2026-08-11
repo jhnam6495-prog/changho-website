@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PageHero from "../components/PageHero";
 import SectionTabs from "../components/SectionTabs";
+import DocumentGrid from "../components/DocumentGrid";
 import { aboutSections } from "../nav-config";
 import { User, ShieldCheck, Handshake, Gem, Users } from "lucide-react";
 
@@ -23,6 +24,11 @@ const overview = [
   { k: "주소지", v: "경상북도 경주시 외동읍 구어2산단로5길 63, 3층" },
   { k: "대표전화 / 팩스", v: "T. 054-624-1515  /  F. 054-624-1516" },
   { k: "등록현황", v: "건설업 등록 01-4840 | 한국건설공제조합 가입" },
+];
+
+const registrations = [
+  { title: "사업자등록증", subtitle: "사업자등록번호 688-88-01675", image: "/images/certifications/business_license.jpg", file: "/images/certifications/business_license.jpg" },
+  { title: "건설업등록증", subtitle: "건설업 등록번호 01-4840", image: "/images/certifications/construction_license.jpg", file: "/images/certifications/Construction_license.pdf" },
 ];
 
 const values = [
@@ -143,8 +149,20 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* 등록현황 */}
+        <section id="registration" className="mob-sec" style={{ padding: "88px 0", scrollMarginTop: 120 }}>
+          <div className="mob-pad" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+            <p style={{ fontFamily: "var(--font-eng)", fontSize: 12, letterSpacing: "0.2em", color: "var(--orange-dark)", fontWeight: 700, marginBottom: 12 }}>REGISTRATION</p>
+            <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: "clamp(24px,3.2vw,32px)", color: "var(--navy-950)", marginBottom: 8 }}>등록현황</h2>
+            <p style={{ color: "var(--text-sub)", fontSize: 15.5, marginBottom: 32, fontFamily: "var(--font-sans)", fontWeight: 300 }}>
+              사업자등록증과 건설업등록증을 통해 창호종합건설(주)의 정식 사업자 등록 현황을 확인하실 수 있습니다.
+            </p>
+            <DocumentGrid items={registrations} columns={2} viewLabel="등록증 원본 보기" />
+          </div>
+        </section>
+
         {/* 경영이념 */}
-        <section id="values" className="mob-sec" style={{ padding: "88px 0", scrollMarginTop: 120 }}>
+        <section id="values" className="mob-sec" style={{ padding: "88px 0", background: "var(--off-white)", scrollMarginTop: 120 }}>
           <div className="mob-pad" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ textAlign: "center", maxWidth: 680, margin: "0 auto 48px" }}>
               <p style={{ fontFamily: "var(--font-eng)", fontSize: 12, letterSpacing: "0.2em", color: "var(--orange-dark)", fontWeight: 700, marginBottom: 12 }}>CORE VALUES</p>
@@ -178,7 +196,7 @@ export default function AboutPage() {
         </section>
 
         {/* 사업비전 */}
-        <section id="vision" className="mob-sec" style={{ padding: "88px 0", background: "var(--off-white)", scrollMarginTop: 120 }}>
+        <section id="vision" className="mob-sec" style={{ padding: "88px 0", scrollMarginTop: 120 }}>
           <div className="mob-pad" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
             <p style={{ fontFamily: "var(--font-eng)", fontSize: 12, letterSpacing: "0.2em", color: "var(--orange-dark)", fontWeight: 700, marginBottom: 12 }}>COMPANY VISION</p>
             <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: "clamp(24px,3.2vw,32px)", color: "var(--navy-950)", marginBottom: 8 }}>사업비전</h2>
@@ -197,7 +215,7 @@ export default function AboutPage() {
         </section>
 
         {/* 연혁 */}
-        <section id="history" className="mob-sec" style={{ padding: "88px 0", scrollMarginTop: 120 }}>
+        <section id="history" className="mob-sec" style={{ padding: "88px 0", background: "var(--off-white)", scrollMarginTop: 120 }}>
           <div className="mob-pad" style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px" }}>
             <p style={{ fontFamily: "var(--font-eng)", fontSize: 12, letterSpacing: "0.2em", color: "var(--orange-dark)", fontWeight: 700, marginBottom: 12 }}>COMPANY HISTORY</p>
             <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: "clamp(24px,3.2vw,32px)", color: "var(--navy-950)", marginBottom: 44 }}>회사연혁</h2>
@@ -221,7 +239,7 @@ export default function AboutPage() {
         </section>
 
         {/* 조직도 */}
-        <section id="organization" className="mob-sec" style={{ padding: "88px 0", background: "var(--off-white)", scrollMarginTop: 120 }}>
+        <section id="organization" className="mob-sec" style={{ padding: "88px 0", scrollMarginTop: 120 }}>
           <div className="mob-pad" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
             <div style={{ textAlign: "center", marginBottom: 44 }}>
               <p style={{ fontFamily: "var(--font-eng)", fontSize: 12, letterSpacing: "0.2em", color: "var(--orange-dark)", fontWeight: 700, marginBottom: 12 }}>ORGANIZATION</p>

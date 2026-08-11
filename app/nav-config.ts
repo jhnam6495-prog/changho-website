@@ -12,6 +12,7 @@ export interface NavItem {
 export const aboutSections: SubItem[] = [
   { label: "대표인사말", id: "greeting" },
   { label: "회사개요", id: "overview" },
+  { label: "등록현황", id: "registration" },
   { label: "경영이념", id: "values" },
   { label: "사업비전", id: "vision" },
   { label: "회사연혁", id: "history" },
