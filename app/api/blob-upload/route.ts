@@ -1,25 +1,31 @@
-import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
+import { handleUploadPresigned, type HandleUploadPresignedBody } from "@vercel/blob/client";
+import { issueSignedToken } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { ADMIN_COOKIE_NAME, isValidSessionToken } from "../../lib/auth";
 
 export async function POST(request: Request): Promise<NextResponse> {
-  const body = (await request.json()) as HandleUploadBody;
+  const body = (await request.json()) as HandleUploadPresignedBody;
 
   try {
-    const jsonResponse = await handleUpload({
+    const jsonResponse = await handleUploadPresigned({
       body,
       request,
-      onBeforeGenerateToken: async () => {
+      getSignedToken: async (pathname) => {
         const store = await cookies();
         const authed = await isValidSessionToken(store.get(ADMIN_COOKIE_NAME)?.value);
         if (!authed) {
           throw new Error("인증되지 않은 요청입니다.");
         }
-        return {
-          addRandomSuffix: true,
+
+        const token = await issueSignedToken({
+          pathname,
+          operations: ["put"],
           maximumSizeInBytes: 50 * 1024 * 1024,
-        };
+          validUntil: Date.now() + 5 * 60 * 1000,
+        });
+
+        return { token };
       },
     });
 

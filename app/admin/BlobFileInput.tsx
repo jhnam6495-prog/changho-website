@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { upload } from "@vercel/blob/client";
+import { uploadPresigned } from "@vercel/blob/client";
 import { Paperclip, X } from "lucide-react";
 
 interface UploadedFile {
@@ -61,7 +61,7 @@ export default function BlobFileInput({
       const uploaded: UploadedFile[] = [];
       for (const file of selected) {
         const pathname = `${pathPrefix}/${Date.now()}-${file.name}`;
-        const blob = await upload(pathname, file, {
+        const blob = await uploadPresigned(pathname, file, {
           access: "public",
           handleUploadUrl: "/api/blob-upload/",
         });
