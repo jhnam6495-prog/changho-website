@@ -6,6 +6,7 @@ const tabs = [
   { href: "/admin/notices", label: "공지사항" },
   { href: "/admin/projects", label: "공사실적" },
   { href: "/admin/documents", label: "인증서·등록증" },
+  { href: "/admin/history", label: "회사연혁" },
 ];
 
 export default function AdminTopBar({ active }: { active: string }) {

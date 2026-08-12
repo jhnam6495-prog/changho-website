@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { Megaphone, Building2, FileCheck2, ChevronRight } from "lucide-react";
+import { Megaphone, Building2, FileCheck2, History, ChevronRight } from "lucide-react";
 import AdminTopBar from "../AdminTopBar";
 
 const cards = [
   { href: "/admin/notices", icon: Megaphone, title: "공지사항 관리", desc: "공지 작성·수정·삭제와 첨부파일 업/다운로드" },
   { href: "/admin/projects", icon: Building2, title: "공사실적 관리", desc: "실적 추가·수정·삭제와 사진 관리" },
   { href: "/admin/documents", icon: FileCheck2, title: "인증서·등록증 관리", desc: "인증서·등록증 추가·수정·삭제" },
+  { href: "/admin/history", icon: History, title: "회사연혁 관리", desc: "연도별 연혁 추가·수정·삭제" },
 ];
 
 export const dynamic = "force-dynamic";

@@ -7,6 +7,7 @@ import SectionTabs from "../components/SectionTabs";
 import DocumentGrid from "../components/DocumentGrid";
 import { aboutSections } from "../nav-config";
 import { listDocuments } from "../lib/documents";
+import { listHistory } from "../lib/history";
 import { User, ShieldCheck, Handshake, Gem, Users } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -41,14 +42,6 @@ const vision = [
   { n: "04", t: "지속가능 성장", d: "지속적 사업확산을 위한 기금조성 기반 마련" },
 ];
 
-const history = [
-  { year: "2025", phase: "도약기", events: ["기술연구소 설립"] },
-  { year: "2024", phase: "성장기", events: ["MSB㈜ 화성물류센터 신축공사", "㈜대창공업 신축공사"] },
-  { year: "2023", phase: "성장기", events: ["ISO 9001·14001·45001 인증 획득", "㈜RSC 신축공사"] },
-  { year: "2022", phase: "성장기", events: ["경산 강학리 토목공사", "울산 북구 호계동 근린생활시설공사", "㈜티제이 신축공사"] },
-  { year: "2021", phase: "창립기", events: ["창호종합건설(주) 주식회사 설립", "건설업 등록 (01-4840)", "한국건설공제조합 가입", "㈜엠제이 신축공사"] },
-];
-
 const orgBranches = [
   { title: "전략기획팀", sub: "기획총괄", children: ["공사관리부 — 외주팀·공사팀·시공팀"] },
   { title: "경영지원부", sub: "경영기획", children: ["재무팀 — 경리·회계", "인사팀 — 인사·총무", "배송팀 — 배송총괄"] },
@@ -60,6 +53,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AboutPage() {
   const registrations = await listDocuments("registration").catch(() => []);
+  const history = await listHistory().catch(() => []);
 
   return (
     <>
@@ -226,21 +220,29 @@ export default async function AboutPage() {
             <p style={{ fontFamily: "var(--font-eng)", fontSize: 12, letterSpacing: "0.2em", color: "var(--orange-dark)", fontWeight: 700, marginBottom: 12 }}>COMPANY HISTORY</p>
             <h2 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: "clamp(24px,3.2vw,32px)", color: "var(--navy-950)", marginBottom: 44 }}>회사연혁</h2>
 
-            {history.map((yr) => (
-              <div key={yr.year} style={{ marginBottom: 44, display: "grid", gridTemplateColumns: "108px 1fr", gap: 28 }} className="mob-col">
-                <div>
-                  <div style={{ fontFamily: "var(--font-eng)", fontSize: 26, fontWeight: 800, color: "var(--navy-900)" }}>{yr.year}</div>
-                  <span style={{ display: "inline-block", marginTop: 8, fontSize: 12, fontWeight: 700, color: "var(--orange-dark)", background: "var(--orange-light)", padding: "3px 10px", borderRadius: 999, fontFamily: "var(--font-sans)" }}>{yr.phase}</span>
-                </div>
-                <ul style={{ display: "grid", gap: 8, listStyle: "none" }}>
-                  {yr.events.map((e) => (
-                    <li key={e} style={{ fontSize: 15, color: "var(--text-sub)", paddingLeft: 16, position: "relative", fontFamily: "var(--font-sans)", fontWeight: 300 }}>
-                      <span style={{ position: "absolute", left: 0, color: "var(--text-mute)" }}>—</span>{e}
-                    </li>
-                  ))}
-                </ul>
+            {history.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "20px 0", color: "var(--text-mute)", fontFamily: "var(--font-sans)" }}>
+                등록된 연혁이 없습니다.
               </div>
-            ))}
+            ) : (
+              history.map((yr) => (
+                <div key={yr.id} style={{ marginBottom: 44, display: "grid", gridTemplateColumns: "108px 1fr", gap: 28 }} className="mob-col">
+                  <div>
+                    <div style={{ fontFamily: "var(--font-eng)", fontSize: 26, fontWeight: 800, color: "var(--navy-900)" }}>{yr.year}</div>
+                    {yr.phase && (
+                      <span style={{ display: "inline-block", marginTop: 8, fontSize: 12, fontWeight: 700, color: "var(--orange-dark)", background: "var(--orange-light)", padding: "3px 10px", borderRadius: 999, fontFamily: "var(--font-sans)" }}>{yr.phase}</span>
+                    )}
+                  </div>
+                  <ul style={{ display: "grid", gap: 8, listStyle: "none" }}>
+                    {yr.events.map((e, i) => (
+                      <li key={i} style={{ fontSize: 15, color: "var(--text-sub)", paddingLeft: 16, position: "relative", fontFamily: "var(--font-sans)", fontWeight: 300 }}>
+                        <span style={{ position: "absolute", left: 0, color: "var(--text-mute)" }}>—</span>{e}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            )}
           </div>
         </section>
 

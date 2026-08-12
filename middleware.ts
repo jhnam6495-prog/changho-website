@@ -20,5 +20,6 @@ export const config = {
     "/admin/notices/:path*",
     "/admin/projects/:path*",
     "/admin/documents/:path*",
+    "/admin/history/:path*",
   ],
 };

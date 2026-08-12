@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { ShieldCheck, Building2, Route, LayoutGrid, Wrench, ArrowRight } from "lucide-react";
+import { ShieldCheck, Building2, Route, LayoutGrid, Wrench, ArrowRight, Lock } from "lucide-react";
 
 const stats = [
   { v: "2021", l: "회사 설립" },
@@ -42,6 +42,18 @@ export default function Home() {
             style={{ objectFit: "cover", objectPosition: "center", opacity: 0.16 }}
             priority
           />
+          <Link
+            href="/admin"
+            style={{
+              position: "absolute", top: 90, right: 20, zIndex: 2,
+              display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12.5, fontWeight: 600,
+              color: "rgba(255,255,255,0.7)", textDecoration: "none", fontFamily: "var(--font-sans)",
+              border: "1px solid rgba(255,255,255,0.25)", borderRadius: 999, padding: "6px 14px",
+              background: "rgba(255,255,255,0.06)", backdropFilter: "blur(4px)",
+            }}
+          >
+            <Lock size={12} /> 관리자
+          </Link>
           <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 1 }}>
             <div style={{ maxWidth: 720 }}>
               <div style={{
