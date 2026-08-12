@@ -5,7 +5,7 @@ import type { DocumentRecord } from "../../lib/documents";
 import { createDocument, deleteDocument } from "./actions";
 import AdminTopBar from "../AdminTopBar";
 import DeleteButton from "../DeleteButton";
-import FileInputButton from "../FileInputButton";
+import BlobFileInput from "../BlobFileInput";
 
 export const dynamic = "force-dynamic";
 
@@ -140,7 +140,7 @@ export default async function AdminDocumentsPage({
             PDF만 가지고 계신 경우, 휴대폰으로 문서를 촬영하거나 PDF 뷰어의 화면 캡처로 이미지 파일을 먼저 준비해 주세요. 모바일 브라우저는 PDF를 바로 보여주지 못하는 경우가 많아 이미지가 반드시 필요합니다.
           </p>
           <div style={{ marginBottom: 20 }}>
-            <FileInputButton id="new-doc-image" name="image" label="이미지 선택" multiple={false} required accept="image/*" />
+            <BlobFileInput id="new-doc-image" fieldName="image" label="이미지 선택" multiple={false} required accept="image/*" pathPrefix="documents-files" />
           </div>
 
           <button

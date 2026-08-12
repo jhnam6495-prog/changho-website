@@ -4,11 +4,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { ADMIN_COOKIE_NAME, isValidSessionToken } from "../../lib/auth";
-import { makeId, getRecord, putJson, uploadFile, deleteBlobs } from "../../lib/blob-store";
+import { makeId, getRecord, putJson, parseUploadedFiles, deleteBlobs } from "../../lib/blob-store";
 import type { Project } from "../../lib/projects";
 
 const DATA_PREFIX = "projects-data/";
-const FILES_PREFIX = "projects-files/";
 
 async function requireAuth() {
   const store = await cookies();
@@ -28,24 +27,17 @@ export async function createProject(formData: FormData): Promise<void> {
     redirect("/admin/projects?error=name");
   }
 
-  const id = makeId();
-  let image: string | undefined;
-
-  const imageFile = formData.get("image");
-  if (imageFile instanceof File && imageFile.size > 0) {
-    const { url } = await uploadFile(`${FILES_PREFIX}${id}/${imageFile.name}`, imageFile);
-    image = url;
-  }
+  const uploadedImage = parseUploadedFiles(formData.get("image"))[0];
 
   const project: Project = {
-    id,
+    id: makeId(),
     name,
     meta,
-    image,
+    image: uploadedImage?.url,
     createdAt: new Date().toISOString(),
   };
 
-  await putJson(`${DATA_PREFIX}${id}.json`, project);
+  await putJson(`${DATA_PREFIX}${project.id}.json`, project);
 
   revalidatePath("/projects");
   revalidatePath("/admin/projects");
@@ -76,11 +68,10 @@ export async function updateProject(formData: FormData): Promise<void> {
     image = undefined;
   }
 
-  const imageFile = formData.get("image");
-  if (imageFile instanceof File && imageFile.size > 0) {
+  const uploadedImage = parseUploadedFiles(formData.get("image"))[0];
+  if (uploadedImage) {
     if (image) await deleteBlobs([image]);
-    const { url } = await uploadFile(`${FILES_PREFIX}${id}/${imageFile.name}`, imageFile);
-    image = url;
+    image = uploadedImage.url;
   }
 
   const updated: Project = { ...existing, name, meta, image };

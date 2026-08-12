@@ -4,11 +4,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { ADMIN_COOKIE_NAME, isValidSessionToken } from "../../lib/auth";
-import { makeId, getRecord, putJson, uploadFile, deleteBlobs } from "../../lib/blob-store";
+import { makeId, getRecord, putJson, parseUploadedFiles, deleteBlobs } from "../../lib/blob-store";
 import type { DocumentRecord, DocumentCategory } from "../../lib/documents";
 
 const DATA_PREFIX = "documents-data/";
-const FILES_PREFIX = "documents-files/";
 
 async function requireAuth() {
   const store = await cookies();
@@ -40,19 +39,18 @@ export async function createDocument(formData: FormData): Promise<void> {
     redirect("/admin/documents?error=title");
   }
 
-  const imageFile = formData.get("image");
-  if (!(imageFile instanceof File) || imageFile.size === 0) {
+  const uploadedImage = parseUploadedFiles(formData.get("image"))[0];
+  if (!uploadedImage) {
     redirect("/admin/documents?error=image");
   }
 
   const id = makeId();
-  const { url: imageUrl } = await uploadFile(`${FILES_PREFIX}${id}/${imageFile.name}`, imageFile);
+  const imageUrl = uploadedImage.url;
 
   let fileUrl = imageUrl;
-  const originalFile = formData.get("file");
-  if (originalFile instanceof File && originalFile.size > 0) {
-    const { url } = await uploadFile(`${FILES_PREFIX}${id}/${originalFile.name}`, originalFile);
-    fileUrl = url;
+  const uploadedFile = parseUploadedFiles(formData.get("file"))[0];
+  if (uploadedFile) {
+    fileUrl = uploadedFile.url;
   }
 
   const doc: DocumentRecord = {
@@ -94,22 +92,20 @@ export async function updateDocument(formData: FormData): Promise<void> {
   let image = existing.image;
   let file = existing.file;
 
-  const imageFile = formData.get("image");
-  if (imageFile instanceof File && imageFile.size > 0) {
+  const uploadedImage = parseUploadedFiles(formData.get("image"))[0];
+  if (uploadedImage) {
     const wasShared = existing.file === existing.image;
     await deleteBlobs([existing.image]);
-    const { url } = await uploadFile(`${FILES_PREFIX}${id}/${imageFile.name}`, imageFile);
-    image = url;
-    if (wasShared) file = url;
+    image = uploadedImage.url;
+    if (wasShared) file = uploadedImage.url;
   }
 
-  const originalFile = formData.get("file");
-  if (originalFile instanceof File && originalFile.size > 0) {
+  const uploadedFile = parseUploadedFiles(formData.get("file"))[0];
+  if (uploadedFile) {
     if (existing.file !== existing.image) {
       await deleteBlobs([existing.file]);
     }
-    const { url } = await uploadFile(`${FILES_PREFIX}${id}/${originalFile.name}`, originalFile);
-    file = url;
+    file = uploadedFile.url;
   }
 
   const updated: DocumentRecord = { ...existing, category, title, subtitle, badge: badge || undefined, image, file };

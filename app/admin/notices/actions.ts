@@ -4,11 +4,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { ADMIN_COOKIE_NAME, isValidSessionToken } from "../../lib/auth";
-import { makeId, dedupeName, getRecord, putJson, uploadFile, deleteBlobs } from "../../lib/blob-store";
+import { makeId, getRecord, putJson, parseUploadedFiles, deleteBlobs } from "../../lib/blob-store";
 import type { Notice, NoticeFile } from "../../lib/notices";
 
 const DATA_PREFIX = "notices-data/";
-const FILES_PREFIX = "notices-files/";
 
 async function requireAuth() {
   const store = await cookies();
@@ -16,21 +15,6 @@ async function requireAuth() {
   if (!authed) {
     redirect("/admin");
   }
-}
-
-async function uploadNoticeFiles(id: string, formData: FormData, usedNames: Set<string>): Promise<NoticeFile[]> {
-  const rawFiles = formData
-    .getAll("files")
-    .filter((f): f is File => f instanceof File && f.size > 0);
-
-  const files: NoticeFile[] = [];
-  for (const file of rawFiles) {
-    const name = dedupeName(file.name, usedNames);
-    usedNames.add(name);
-    const { url, downloadUrl } = await uploadFile(`${FILES_PREFIX}${id}/${name}`, file);
-    files.push({ name, url, downloadUrl, size: file.size });
-  }
-  return files;
 }
 
 export async function createNotice(formData: FormData): Promise<void> {
@@ -43,12 +27,11 @@ export async function createNotice(formData: FormData): Promise<void> {
     redirect("/admin/notices?error=title");
   }
 
-  const id = makeId();
-  const files = await uploadNoticeFiles(id, formData, new Set<string>());
+  const files: NoticeFile[] = parseUploadedFiles(formData.get("files"));
   const showOnHomepage = formData.get("showOnHomepage") != null;
 
   const notice: Notice = {
-    id,
+    id: makeId(),
     title,
     content,
     createdAt: new Date().toISOString(),
@@ -56,7 +39,7 @@ export async function createNotice(formData: FormData): Promise<void> {
     files,
   };
 
-  await putJson(`${DATA_PREFIX}${id}.json`, notice);
+  await putJson(`${DATA_PREFIX}${notice.id}.json`, notice);
 
   revalidatePath("/notices");
   revalidatePath("/admin/notices");
@@ -86,8 +69,7 @@ export async function updateNotice(formData: FormData): Promise<void> {
   const removedFiles = existing.files.filter((f) => removeUrls.has(f.url));
   await deleteBlobs(removedFiles.map((f) => f.url));
 
-  const usedNames = new Set(keptFiles.map((f) => f.name));
-  const newFiles = await uploadNoticeFiles(id, formData, usedNames);
+  const newFiles: NoticeFile[] = parseUploadedFiles(formData.get("files"));
   const showOnHomepage = formData.get("showOnHomepage") != null;
 
   const updated: Notice = {

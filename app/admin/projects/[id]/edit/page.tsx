@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getProject } from "../../../../lib/projects";
 import { updateProject } from "../../actions";
-import FileInputButton from "../../../FileInputButton";
+import BlobFileInput from "../../../BlobFileInput";
 
 export const dynamic = "force-dynamic";
 
@@ -76,7 +76,7 @@ export default async function EditProjectPage({
             사진 교체 (선택)
           </label>
           <div style={{ marginBottom: 24 }}>
-            <FileInputButton id="edit-project-image" name="image" label="새 사진 선택" multiple={false} accept="image/*" />
+            <BlobFileInput id="edit-project-image" fieldName="image" label="새 사진 선택" multiple={false} accept="image/*" pathPrefix="projects-files" />
           </div>
 
           <div style={{ display: "flex", gap: 10 }}>

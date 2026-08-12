@@ -10,20 +10,6 @@ export function makeId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 }
 
-export function dedupeName(name: string, used: Set<string>): string {
-  if (!used.has(name)) return name;
-  const dot = name.lastIndexOf(".");
-  const base = dot > 0 ? name.slice(0, dot) : name;
-  const ext = dot > 0 ? name.slice(dot) : "";
-  let n = 2;
-  let candidate = `${base}(${n})${ext}`;
-  while (used.has(candidate)) {
-    n += 1;
-    candidate = `${base}(${n})${ext}`;
-  }
-  return candidate;
-}
-
 export async function listRecords<T>(prefix: string): Promise<T[]> {
   const { blobs } = await list({ prefix });
 
@@ -62,14 +48,25 @@ export async function putJson(pathname: string, data: unknown, opts?: { allowOve
   });
 }
 
-export async function uploadFile(pathname: string, file: File): Promise<{ url: string; downloadUrl: string }> {
-  const blob = await put(pathname, file, {
-    access: "public",
-    contentType: file.type || undefined,
-  });
-  return { url: blob.url, downloadUrl: blob.downloadUrl };
-}
-
 export async function deleteBlobs(urlsOrPathnames: string[]): Promise<void> {
   if (urlsOrPathnames.length) await del(urlsOrPathnames);
+}
+
+// 파일은 이제 브라우저에서 Vercel Blob으로 직접 업로드된다(서버리스 함수의
+// 요청 본문 크기 제한(~4.5MB)을 우회하기 위함). 서버 액션은 업로드가 끝난
+// 뒤 아래 형태의 JSON 메타데이터만 폼 필드로 전달받아 사용한다.
+export interface UploadedFile {
+  name: string;
+  url: string;
+  downloadUrl: string;
+  size: number;
+}
+
+export function parseUploadedFiles(raw: FormDataEntryValue | null): UploadedFile[] {
+  try {
+    const parsed = JSON.parse(String(raw || "[]"));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }

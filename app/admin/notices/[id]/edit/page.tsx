@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getNotice } from "../../../../lib/notices";
 import { formatBytes } from "../../../../lib/format";
 import { updateNotice } from "../../actions";
-import FileInputButton from "../../../FileInputButton";
+import BlobFileInput from "../../../BlobFileInput";
 
 export const dynamic = "force-dynamic";
 
@@ -86,7 +86,7 @@ export default async function EditNoticePage({
             파일 추가 (여러 개 선택 가능)
           </label>
           <div style={{ marginBottom: 20 }}>
-            <FileInputButton id="edit-notice-files" label="파일 추가" hint="전체 합계 최대 20MB" />
+            <BlobFileInput id="edit-notice-files" fieldName="files" label="파일 추가" pathPrefix="notices-files" />
           </div>
 
           <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, color: "var(--text-sub)", fontFamily: "var(--font-sans)", cursor: "pointer", marginBottom: 24 }}>

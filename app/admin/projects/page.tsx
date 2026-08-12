@@ -4,7 +4,7 @@ import { listProjects } from "../../lib/projects";
 import { createProject, deleteProject } from "./actions";
 import AdminTopBar from "../AdminTopBar";
 import DeleteButton from "../DeleteButton";
-import FileInputButton from "../FileInputButton";
+import BlobFileInput from "../BlobFileInput";
 
 export const dynamic = "force-dynamic";
 
@@ -66,7 +66,7 @@ export default async function AdminProjectsPage({
             사진 (선택 — 등록하면 대표 실적 갤러리에도 노출됩니다)
           </label>
           <div style={{ marginBottom: 20 }}>
-            <FileInputButton id="new-project-image" name="image" label="사진 선택" multiple={false} accept="image/*" />
+            <BlobFileInput id="new-project-image" fieldName="image" label="사진 선택" multiple={false} accept="image/*" pathPrefix="projects-files" />
           </div>
 
           <button

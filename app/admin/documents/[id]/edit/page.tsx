@@ -3,7 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getDocument } from "../../../../lib/documents";
 import { updateDocument } from "../../actions";
-import FileInputButton from "../../../FileInputButton";
+import BlobFileInput from "../../../BlobFileInput";
 
 export const dynamic = "force-dynamic";
 
@@ -93,7 +93,7 @@ export default async function EditDocumentPage({
             이미지 교체 (선택)
           </label>
           <div style={{ marginBottom: 24 }}>
-            <FileInputButton id="edit-doc-image" name="image" label="새 이미지 선택" multiple={false} accept="image/*" />
+            <BlobFileInput id="edit-doc-image" fieldName="image" label="새 이미지 선택" multiple={false} accept="image/*" pathPrefix="documents-files" />
           </div>
 
           <div style={{ display: "flex", gap: 10 }}>
