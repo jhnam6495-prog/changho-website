@@ -119,7 +119,7 @@ export default async function SafetyPage() {
                 등록된 인증서가 없습니다.
               </div>
             ) : (
-              <DocumentGrid items={certs} viewLabel="인증서 원본 보기" />
+              <DocumentGrid items={certs} />
             )}
           </div>
         </section>

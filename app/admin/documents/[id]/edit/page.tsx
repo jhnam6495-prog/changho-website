@@ -92,15 +92,8 @@ export default async function EditDocumentPage({
           <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 8, fontFamily: "var(--font-sans)" }}>
             이미지 교체 (선택)
           </label>
-          <div style={{ marginBottom: 20 }}>
-            <FileInputButton id="edit-doc-image" name="image" label="새 이미지 선택" multiple={false} accept="image/*" />
-          </div>
-
-          <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 8, fontFamily: "var(--font-sans)" }}>
-            원본 파일 교체 (선택)
-          </label>
           <div style={{ marginBottom: 24 }}>
-            <FileInputButton id="edit-doc-file" name="file" label="새 원본 파일 선택" multiple={false} />
+            <FileInputButton id="edit-doc-image" name="image" label="새 이미지 선택" multiple={false} accept="image/*" />
           </div>
 
           <div style={{ display: "flex", gap: 10 }}>

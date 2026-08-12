@@ -143,13 +143,6 @@ export default async function AdminDocumentsPage({
             <FileInputButton id="new-doc-image" name="image" label="이미지 선택" multiple={false} required accept="image/*" />
           </div>
 
-          <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 8, fontFamily: "var(--font-sans)" }}>
-            원본 파일 (선택 — PDF 등. 비워두면 위 이미지가 원본으로도 사용됩니다)
-          </label>
-          <div style={{ marginBottom: 20 }}>
-            <FileInputButton id="new-doc-file" name="file" label="원본 파일 선택" multiple={false} />
-          </div>
-
           <button
             type="submit"
             style={{

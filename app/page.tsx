@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import HomeNoticePopup from "./components/HomeNoticePopup";
+import { getFeaturedNotice, firstImageFile } from "./lib/notices";
 import { ShieldCheck, Building2, Route, LayoutGrid, Wrench, ArrowRight, Lock } from "lucide-react";
 
 const stats = [
@@ -24,9 +26,16 @@ const works = [
   { img: "/images/projects/rsc-2023.jpg", tag: "공장부문 · 2023", name: "㈜RSC 신축공사" },
 ];
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const featuredNotice = await getFeaturedNotice().catch(() => null);
+
   return (
     <>
+      {featuredNotice && (
+        <HomeNoticePopup notice={featuredNotice} image={firstImageFile(featuredNotice.files)} />
+      )}
       <Header />
       <main>
         {/* HERO */}

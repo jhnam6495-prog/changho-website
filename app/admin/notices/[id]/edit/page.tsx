@@ -85,9 +85,14 @@ export default async function EditNoticePage({
           <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 8, fontFamily: "var(--font-sans)" }}>
             파일 추가 (여러 개 선택 가능)
           </label>
-          <div style={{ marginBottom: 24 }}>
-            <FileInputButton id="edit-notice-files" label="파일 추가" />
+          <div style={{ marginBottom: 20 }}>
+            <FileInputButton id="edit-notice-files" label="파일 추가" hint="전체 합계 최대 20MB" />
           </div>
+
+          <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, color: "var(--text-sub)", fontFamily: "var(--font-sans)", cursor: "pointer", marginBottom: 24 }}>
+            <input type="checkbox" name="showOnHomepage" defaultChecked={notice.showOnHomepage} />
+            홈페이지 팝업으로 노출 (제목·내용·첨부 이미지가 팝업으로 표시됩니다)
+          </label>
 
           <div style={{ display: "flex", gap: 10 }}>
             <button

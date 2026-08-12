@@ -62,8 +62,13 @@ export default async function AdminNoticesPage({
 
           <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 8, fontFamily: "var(--font-sans)" }}>첨부파일 (여러 개 선택 가능)</label>
           <div style={{ marginBottom: 20 }}>
-            <FileInputButton id="new-notice-files" label="첨부파일 선택" />
+            <FileInputButton id="new-notice-files" label="첨부파일 선택" hint="전체 합계 최대 20MB" />
           </div>
+
+          <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, color: "var(--text-sub)", fontFamily: "var(--font-sans)", cursor: "pointer", marginBottom: 20 }}>
+            <input type="checkbox" name="showOnHomepage" />
+            홈페이지 팝업으로 노출 (제목·내용·첨부 이미지가 팝업으로 표시됩니다)
+          </label>
 
           <button
             type="submit"
@@ -94,8 +99,15 @@ export default async function AdminNoticesPage({
               }}
             >
               <div style={{ minWidth: 0 }}>
-                <div style={{ fontWeight: 700, fontSize: 14.5, color: "var(--navy-950)", fontFamily: "var(--font-sans)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                  {n.title}
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14.5, color: "var(--navy-950)", fontFamily: "var(--font-sans)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {n.title}
+                  </div>
+                  {n.showOnHomepage && (
+                    <span style={{ flexShrink: 0, fontSize: 11, fontWeight: 700, color: "var(--orange-dark)", background: "var(--orange-light)", padding: "2px 8px", borderRadius: 999, fontFamily: "var(--font-sans)" }}>
+                      홈 팝업
+                    </span>
+                  )}
                 </div>
                 <div style={{ fontSize: 12.5, color: "var(--text-mute)", marginTop: 3, fontFamily: "var(--font-sans)" }}>
                   {formatDate(n.createdAt)} · 첨부파일 {n.files.length}개

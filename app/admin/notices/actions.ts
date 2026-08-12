@@ -45,12 +45,14 @@ export async function createNotice(formData: FormData): Promise<void> {
 
   const id = makeId();
   const files = await uploadNoticeFiles(id, formData, new Set<string>());
+  const showOnHomepage = formData.get("showOnHomepage") != null;
 
   const notice: Notice = {
     id,
     title,
     content,
     createdAt: new Date().toISOString(),
+    showOnHomepage,
     files,
   };
 
@@ -58,6 +60,7 @@ export async function createNotice(formData: FormData): Promise<void> {
 
   revalidatePath("/notices");
   revalidatePath("/admin/notices");
+  revalidatePath("/");
   redirect("/admin/notices");
 }
 
@@ -85,12 +88,14 @@ export async function updateNotice(formData: FormData): Promise<void> {
 
   const usedNames = new Set(keptFiles.map((f) => f.name));
   const newFiles = await uploadNoticeFiles(id, formData, usedNames);
+  const showOnHomepage = formData.get("showOnHomepage") != null;
 
   const updated: Notice = {
     ...existing,
     title,
     content,
     updatedAt: new Date().toISOString(),
+    showOnHomepage,
     files: [...keptFiles, ...newFiles],
   };
 
@@ -99,6 +104,7 @@ export async function updateNotice(formData: FormData): Promise<void> {
   revalidatePath("/notices");
   revalidatePath(`/notices/${id}`);
   revalidatePath("/admin/notices");
+  revalidatePath("/");
   redirect("/admin/notices");
 }
 
@@ -117,4 +123,5 @@ export async function deleteNotice(formData: FormData): Promise<void> {
 
   revalidatePath("/notices");
   revalidatePath("/admin/notices");
+  revalidatePath("/");
 }

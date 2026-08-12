@@ -1,22 +1,18 @@
 import Image from "next/image";
-import { FileText } from "lucide-react";
 
 interface DocItem {
   title: string;
   subtitle: string;
   badge?: string;
   image: string;
-  file: string;
 }
 
 export default function DocumentGrid({
   items,
   columns = 3,
-  viewLabel = "원본 보기",
 }: {
   items: DocItem[];
   columns?: number;
-  viewLabel?: string;
 }) {
   return (
     <div className="mob-col" style={{ display: "grid", gridTemplateColumns: `repeat(${columns},1fr)`, gap: 20 }}>
@@ -37,17 +33,6 @@ export default function DocumentGrid({
             {c.badge && (
               <div style={{ fontSize: 12, color: "var(--orange-dark)", fontWeight: 700, marginTop: 10, fontFamily: "var(--font-sans)" }}>{c.badge}</div>
             )}
-            <a
-              href={c.file}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 6, marginTop: 16,
-                fontSize: 13, fontWeight: 700, color: "var(--blue-mid)", textDecoration: "none", fontFamily: "var(--font-sans)",
-              }}
-            >
-              <FileText size={15} /> {viewLabel}
-            </a>
           </div>
         </div>
       ))}

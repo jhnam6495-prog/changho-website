@@ -13,6 +13,7 @@ export interface Notice {
   content: string;
   createdAt: string;
   updatedAt?: string;
+  showOnHomepage?: boolean;
   files: NoticeFile[];
 }
 
@@ -25,4 +26,13 @@ export async function listNotices(): Promise<Notice[]> {
 
 export async function getNotice(id: string): Promise<Notice | null> {
   return getRecord<Notice>(`${DATA_PREFIX}${id}.json`);
+}
+
+export async function getFeaturedNotice(): Promise<Notice | null> {
+  const notices = await listNotices();
+  return notices.find((n) => n.showOnHomepage) ?? null;
+}
+
+export function firstImageFile(files: NoticeFile[]): NoticeFile | undefined {
+  return files.find((f) => /\.(jpe?g|png|gif|webp)$/i.test(f.name));
 }

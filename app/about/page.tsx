@@ -156,7 +156,7 @@ export default async function AboutPage() {
                 등록된 서류가 없습니다.
               </div>
             ) : (
-              <DocumentGrid items={registrations} columns={2} viewLabel="등록증 원본 보기" />
+              <DocumentGrid items={registrations} columns={2} />
             )}
           </div>
         </section>

@@ -9,6 +9,7 @@ export default function FileInputButton({
   multiple = true,
   required = false,
   accept,
+  hint = "최대 20MB",
 }: {
   id: string;
   name?: string;
@@ -16,22 +17,28 @@ export default function FileInputButton({
   multiple?: boolean;
   required?: boolean;
   accept?: string;
+  hint?: string | false;
 }) {
   const [fileNames, setFileNames] = useState<string[]>([]);
 
   return (
     <div>
-      <label
-        htmlFor={id}
-        style={{
-          display: "inline-flex", alignItems: "center", gap: 8, cursor: "pointer",
-          padding: "10px 16px", border: "1px dashed var(--blue-mid)", borderRadius: 8,
-          color: "var(--blue-mid)", fontWeight: 700, fontSize: 13.5, fontFamily: "var(--font-sans)",
-          background: "var(--blue-light)",
-        }}
-      >
-        <Paperclip size={16} /> {label}
-      </label>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+        <label
+          htmlFor={id}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: 8, cursor: "pointer",
+            padding: "10px 16px", border: "1px dashed var(--blue-mid)", borderRadius: 8,
+            color: "var(--blue-mid)", fontWeight: 700, fontSize: 13.5, fontFamily: "var(--font-sans)",
+            background: "var(--blue-light)",
+          }}
+        >
+          <Paperclip size={16} /> {label}
+        </label>
+        {hint && (
+          <span style={{ fontSize: 12, color: "var(--text-mute)", fontFamily: "var(--font-sans)" }}>{hint}</span>
+        )}
+      </div>
       <input
         id={id}
         name={name}
