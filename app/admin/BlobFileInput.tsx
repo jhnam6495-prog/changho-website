@@ -63,7 +63,7 @@ export default function BlobFileInput({
         const pathname = `${pathPrefix}/${Date.now()}-${file.name}`;
         const blob = await upload(pathname, file, {
           access: "public",
-          handleUploadUrl: "/api/blob-upload",
+          handleUploadUrl: "/api/blob-upload/",
         });
         uploaded.push({ name: file.name, url: blob.url, downloadUrl: blob.downloadUrl, size: file.size });
       }
