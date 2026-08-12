@@ -6,6 +6,7 @@ import PageHero from "../components/PageHero";
 import SectionTabs from "../components/SectionTabs";
 import DocumentGrid from "../components/DocumentGrid";
 import { aboutSections } from "../nav-config";
+import { listDocuments } from "../lib/documents";
 import { User, ShieldCheck, Handshake, Gem, Users } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -24,11 +25,6 @@ const overview = [
   { k: "주소지", v: "경상북도 경주시 외동읍 구어2산단로5길 63, 3층" },
   { k: "대표전화 / 팩스", v: "T. 054-624-1515  /  F. 054-624-1516" },
   { k: "등록현황", v: "건설업 등록 01-4840 | 한국건설공제조합 가입" },
-];
-
-const registrations = [
-  { title: "사업자등록증", subtitle: "사업자등록번호 688-88-01675", image: "/images/certifications/business_license.jpg", file: "/images/certifications/business_license.jpg" },
-  { title: "건설업등록증", subtitle: "건설업 등록번호 01-4840", image: "/images/certifications/construction_license.jpg", file: "/images/certifications/Construction_license.pdf" },
 ];
 
 const values = [
@@ -60,7 +56,11 @@ const orgBranches = [
   { title: "디자인본부", sub: "디자인기획", children: ["디자인팀 — 3D/CAD", "인테리어 — 기획·시공"] },
 ];
 
-export default function AboutPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AboutPage() {
+  const registrations = await listDocuments("registration").catch(() => []);
+
   return (
     <>
       <Header />
@@ -157,7 +157,13 @@ export default function AboutPage() {
             <p style={{ color: "var(--text-sub)", fontSize: 15.5, marginBottom: 32, fontFamily: "var(--font-sans)", fontWeight: 300 }}>
               사업자등록증과 건설업등록증을 통해 창호종합건설(주)의 정식 사업자 등록 현황을 확인하실 수 있습니다.
             </p>
-            <DocumentGrid items={registrations} columns={2} viewLabel="등록증 원본 보기" />
+            {registrations.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "20px 0", color: "var(--text-mute)", fontFamily: "var(--font-sans)" }}>
+                등록된 서류가 없습니다.
+              </div>
+            ) : (
+              <DocumentGrid items={registrations} columns={2} viewLabel="등록증 원본 보기" />
+            )}
           </div>
         </section>
 

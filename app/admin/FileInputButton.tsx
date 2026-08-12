@@ -2,7 +2,21 @@
 import { useState } from "react";
 import { Paperclip } from "lucide-react";
 
-export default function FileInputButton({ id, label }: { id: string; label: string }) {
+export default function FileInputButton({
+  id,
+  name = "files",
+  label,
+  multiple = true,
+  required = false,
+  accept,
+}: {
+  id: string;
+  name?: string;
+  label: string;
+  multiple?: boolean;
+  required?: boolean;
+  accept?: string;
+}) {
   const [fileNames, setFileNames] = useState<string[]>([]);
 
   return (
@@ -20,9 +34,11 @@ export default function FileInputButton({ id, label }: { id: string; label: stri
       </label>
       <input
         id={id}
-        name="files"
+        name={name}
         type="file"
-        multiple
+        multiple={multiple}
+        required={required}
+        accept={accept}
         style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0,0,0,0)" }}
         onChange={(e) => setFileNames(Array.from(e.target.files || []).map((f) => f.name))}
       />

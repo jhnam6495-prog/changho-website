@@ -1,11 +1,15 @@
 "use client";
 
-export default function DeleteButton() {
+export default function DeleteButton({
+  confirmMessage = "삭제하시겠습니까? 되돌릴 수 없습니다.",
+}: {
+  confirmMessage?: string;
+}) {
   return (
     <button
       type="submit"
       onClick={(e) => {
-        if (!confirm("이 공지사항을 삭제하시겠습니까? 첨부파일도 함께 삭제되며 되돌릴 수 없습니다.")) {
+        if (!confirm(confirmMessage)) {
           e.preventDefault();
         }
       }}

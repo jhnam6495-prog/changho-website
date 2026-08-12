@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { listNotices } from "../../lib/notices";
 import { formatBytes, formatDate } from "../../lib/format";
-import { logout } from "../actions";
 import { createNotice, deleteNotice } from "./actions";
-import DeleteButton from "./DeleteButton";
-import FileInputButton from "./FileInputButton";
+import AdminTopBar from "../AdminTopBar";
+import DeleteButton from "../DeleteButton";
+import FileInputButton from "../FileInputButton";
 
 export const dynamic = "force-dynamic";
 
@@ -19,25 +19,13 @@ export default async function AdminNoticesPage({
   return (
     <div style={{ minHeight: "100vh", background: "var(--off-white)", padding: "40px 20px" }}>
       <div style={{ maxWidth: 860, margin: "0 auto" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
-          <div>
-            <h1 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 24, color: "var(--navy-950)" }}>공지사항 관리</h1>
-            <Link href="/notices" target="_blank" style={{ fontSize: 13, color: "var(--blue-mid)", fontFamily: "var(--font-sans)" }}>
-              사이트에서 공지사항 보기 ↗
-            </Link>
-          </div>
-          <form action={logout}>
-            <button
-              type="submit"
-              style={{
-                background: "none", border: "1px solid var(--blue-line)", color: "var(--text-sub)",
-                borderRadius: 8, padding: "9px 16px", fontSize: 13.5, fontWeight: 600,
-                cursor: "pointer", fontFamily: "var(--font-sans)",
-              }}
-            >
-              로그아웃
-            </button>
-          </form>
+        <AdminTopBar active="/admin/notices" />
+
+        <div style={{ marginBottom: 20 }}>
+          <h1 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 24, color: "var(--navy-950)" }}>공지사항 관리</h1>
+          <Link href="/notices" target="_blank" style={{ fontSize: 13, color: "var(--blue-mid)", fontFamily: "var(--font-sans)" }}>
+            사이트에서 공지사항 보기 ↗
+          </Link>
         </div>
 
         {/* 작성 폼 */}
@@ -138,7 +126,7 @@ export default async function AdminNoticesPage({
                 </Link>
                 <form action={deleteNotice}>
                   <input type="hidden" name="id" value={n.id} />
-                  <DeleteButton />
+                  <DeleteButton confirmMessage="이 공지사항을 삭제하시겠습니까? 첨부파일도 함께 삭제되며 되돌릴 수 없습니다." />
                 </form>
               </div>
             </div>

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getNotice } from "../../../../lib/notices";
 import { formatBytes } from "../../../../lib/format";
 import { updateNotice } from "../../actions";
-import FileInputButton from "../../FileInputButton";
+import FileInputButton from "../../../FileInputButton";
 
 export const dynamic = "force-dynamic";
 

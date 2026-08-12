@@ -1,10 +1,10 @@
 "use server";
 
-import { put, del, head } from "@vercel/blob";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { ADMIN_COOKIE_NAME, isValidSessionToken } from "../../lib/auth";
+import { makeId, dedupeName, getRecord, putJson, uploadFile, deleteBlobs } from "../../lib/blob-store";
 import type { Notice, NoticeFile } from "../../lib/notices";
 
 const DATA_PREFIX = "notices-data/";
@@ -18,22 +18,19 @@ async function requireAuth() {
   }
 }
 
-function makeId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-}
+async function uploadNoticeFiles(id: string, formData: FormData, usedNames: Set<string>): Promise<NoticeFile[]> {
+  const rawFiles = formData
+    .getAll("files")
+    .filter((f): f is File => f instanceof File && f.size > 0);
 
-function dedupeName(name: string, used: Set<string>): string {
-  if (!used.has(name)) return name;
-  const dot = name.lastIndexOf(".");
-  const base = dot > 0 ? name.slice(0, dot) : name;
-  const ext = dot > 0 ? name.slice(dot) : "";
-  let n = 2;
-  let candidate = `${base}(${n})${ext}`;
-  while (used.has(candidate)) {
-    n += 1;
-    candidate = `${base}(${n})${ext}`;
+  const files: NoticeFile[] = [];
+  for (const file of rawFiles) {
+    const name = dedupeName(file.name, usedNames);
+    usedNames.add(name);
+    const { url, downloadUrl } = await uploadFile(`${FILES_PREFIX}${id}/${name}`, file);
+    files.push({ name, url, downloadUrl, size: file.size });
   }
-  return candidate;
+  return files;
 }
 
 export async function createNotice(formData: FormData): Promise<void> {
@@ -47,23 +44,7 @@ export async function createNotice(formData: FormData): Promise<void> {
   }
 
   const id = makeId();
-  const rawFiles = formData
-    .getAll("files")
-    .filter((f): f is File => f instanceof File && f.size > 0);
-
-  const usedNames = new Set<string>();
-  const files: NoticeFile[] = [];
-
-  for (const file of rawFiles) {
-    const name = dedupeName(file.name, usedNames);
-    usedNames.add(name);
-
-    const blob = await put(`${FILES_PREFIX}${id}/${name}`, file, {
-      access: "public",
-      contentType: file.type || undefined,
-    });
-    files.push({ name, url: blob.url, downloadUrl: blob.downloadUrl, size: file.size });
-  }
+  const files = await uploadNoticeFiles(id, formData, new Set<string>());
 
   const notice: Notice = {
     id,
@@ -73,11 +54,7 @@ export async function createNotice(formData: FormData): Promise<void> {
     files,
   };
 
-  await put(`${DATA_PREFIX}${id}.json`, JSON.stringify(notice), {
-    access: "public",
-    contentType: "application/json",
-    cacheControlMaxAge: 60,
-  });
+  await putJson(`${DATA_PREFIX}${id}.json`, notice);
 
   revalidatePath("/notices");
   revalidatePath("/admin/notices");
@@ -98,37 +75,16 @@ export async function updateNotice(formData: FormData): Promise<void> {
   }
 
   const pathname = `${DATA_PREFIX}${id}.json`;
-  const meta = await head(pathname).catch(() => null);
-  if (!meta) redirect("/admin/notices");
-
-  const res = await fetch(meta.url, { cache: "no-store" });
-  const existing = (await res.json()) as Notice;
+  const existing = await getRecord<Notice>(pathname);
+  if (!existing) redirect("/admin/notices");
 
   const removeUrls = new Set(formData.getAll("removeFiles").map(String));
   const keptFiles = existing.files.filter((f) => !removeUrls.has(f.url));
   const removedFiles = existing.files.filter((f) => removeUrls.has(f.url));
-
-  if (removedFiles.length) {
-    await del(removedFiles.map((f) => f.url));
-  }
-
-  const rawFiles = formData
-    .getAll("files")
-    .filter((f): f is File => f instanceof File && f.size > 0);
+  await deleteBlobs(removedFiles.map((f) => f.url));
 
   const usedNames = new Set(keptFiles.map((f) => f.name));
-  const newFiles: NoticeFile[] = [];
-
-  for (const file of rawFiles) {
-    const name = dedupeName(file.name, usedNames);
-    usedNames.add(name);
-
-    const blob = await put(`${FILES_PREFIX}${id}/${name}`, file, {
-      access: "public",
-      contentType: file.type || undefined,
-    });
-    newFiles.push({ name, url: blob.url, downloadUrl: blob.downloadUrl, size: file.size });
-  }
+  const newFiles = await uploadNoticeFiles(id, formData, usedNames);
 
   const updated: Notice = {
     ...existing,
@@ -138,12 +94,7 @@ export async function updateNotice(formData: FormData): Promise<void> {
     files: [...keptFiles, ...newFiles],
   };
 
-  await put(pathname, JSON.stringify(updated), {
-    access: "public",
-    contentType: "application/json",
-    cacheControlMaxAge: 60,
-    allowOverwrite: true,
-  });
+  await putJson(pathname, updated, { allowOverwrite: true });
 
   revalidatePath("/notices");
   revalidatePath(`/notices/${id}`);
@@ -158,21 +109,11 @@ export async function deleteNotice(formData: FormData): Promise<void> {
   if (!id) return;
 
   const pathname = `${DATA_PREFIX}${id}.json`;
-  const meta = await head(pathname).catch(() => null);
-
-  if (meta) {
-    try {
-      const res = await fetch(meta.url, { cache: "no-store" });
-      if (res.ok) {
-        const notice = (await res.json()) as Notice;
-        const fileUrls = (notice.files || []).map((f) => f.url);
-        if (fileUrls.length) await del(fileUrls);
-      }
-    } catch {
-      // 첨부파일 정보를 읽지 못해도 공지 데이터 자체는 계속 삭제 진행
-    }
-    await del(meta.url);
+  const notice = await getRecord<Notice>(pathname);
+  if (notice?.files.length) {
+    await deleteBlobs(notice.files.map((f) => f.url));
   }
+  await deleteBlobs([pathname]);
 
   revalidatePath("/notices");
   revalidatePath("/admin/notices");

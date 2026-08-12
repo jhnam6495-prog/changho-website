@@ -6,6 +6,7 @@ import PageHero from "../components/PageHero";
 import SectionTabs from "../components/SectionTabs";
 import DocumentGrid from "../components/DocumentGrid";
 import { safetySections } from "../nav-config";
+import { listDocuments } from "../lib/documents";
 import { ShieldCheck, Search, Users, ClipboardCheck, ScrollText, CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -19,12 +20,6 @@ const policies = [
   "협력·단종업체를 포함한 전 현장 인력에게 안전교육을 실시한다",
   "중대재해처벌법 등 관계 법령을 철저히 준수한다",
   "지속적인 개선을 통해 무재해 사업장을 실현한다",
-];
-
-const certs = [
-  { title: "ISO 45001", subtitle: "안전보건경영시스템", badge: "2023년 인증 획득", image: "/images/certifications/45001.jpg", file: "/images/certifications/45001.pdf" },
-  { title: "ISO 9001", subtitle: "품질경영시스템", badge: "2023년 인증 획득", image: "/images/certifications/9001.jpg", file: "/images/certifications/9001.pdf" },
-  { title: "ISO 14001", subtitle: "환경경영시스템", badge: "2023년 인증 획득", image: "/images/certifications/14001.jpg", file: "/images/certifications/14001.pdf" },
 ];
 
 const system = [
@@ -58,7 +53,11 @@ const compliance = [
   "내부심사 계획 및 결과보고를 통한 시스템 개선",
 ];
 
-export default function SafetyPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SafetyPage() {
+  const certs = await listDocuments("certification").catch(() => []);
+
   return (
     <>
       <Header />
@@ -115,7 +114,13 @@ export default function SafetyPage() {
               <p style={{ color: "var(--text-sub)", fontSize: 15.5, fontFamily: "var(--font-sans)", fontWeight: 300, wordBreak: "keep-all" }}>2023년 품질·환경·안전보건 3개 분야 ISO 국제 인증을 획득하여 체계적으로 운영하고 있습니다.</p>
             </div>
 
-            <DocumentGrid items={certs} viewLabel="인증서 원본 보기" />
+            {certs.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "20px 0", color: "var(--text-mute)", fontFamily: "var(--font-sans)" }}>
+                등록된 인증서가 없습니다.
+              </div>
+            ) : (
+              <DocumentGrid items={certs} viewLabel="인증서 원본 보기" />
+            )}
           </div>
         </section>
 

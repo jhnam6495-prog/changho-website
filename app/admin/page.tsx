@@ -15,7 +15,7 @@ export default async function AdminLoginPage({
   const store = await cookies();
   const authed = await isValidSessionToken(store.get(ADMIN_COOKIE_NAME)?.value);
   if (authed) {
-    redirect("/admin/notices");
+    redirect("/admin/dashboard");
   }
 
   return (
@@ -34,7 +34,7 @@ export default async function AdminLoginPage({
       >
         <div style={{ textAlign: "center", marginBottom: 28 }}>
           <div style={{ fontFamily: "var(--font-eng)", fontSize: 12, letterSpacing: "0.2em", color: "var(--orange-dark)", fontWeight: 700, marginBottom: 8 }}>ADMIN</div>
-          <h1 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 22, color: "var(--navy-950)" }}>공지사항 관리자</h1>
+          <h1 style={{ fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 22, color: "var(--navy-950)" }}>홈페이지 관리자</h1>
         </div>
 
         <label style={{ display: "block", fontSize: 13, fontWeight: 700, color: "var(--navy-900)", marginBottom: 8, fontFamily: "var(--font-sans)" }}>
