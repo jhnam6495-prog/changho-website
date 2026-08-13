@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { Paperclip, ChevronRight, Lock } from "lucide-react";
+import { Paperclip, ChevronRight } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import PageHero from "../components/PageHero";
@@ -30,19 +30,6 @@ export default async function NoticesPage() {
 
         <section className="mob-sec" style={{ padding: "88px 0" }}>
           <div className="mob-pad" style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px" }}>
-            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 16 }}>
-              <Link
-                href="/admin"
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600,
-                  color: "var(--text-mute)", textDecoration: "none", fontFamily: "var(--font-sans)",
-                  border: "1px solid var(--blue-line)", borderRadius: 999, padding: "7px 14px",
-                }}
-              >
-                <Lock size={13} /> 관리자
-              </Link>
-            </div>
-
             {notices.length === 0 ? (
               <div style={{ textAlign: "center", padding: "80px 0", color: "var(--text-mute)", fontFamily: "var(--font-sans)" }}>
                 등록된 공지사항이 없습니다.

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeNoticePopup from "./components/HomeNoticePopup";
-import { getFeaturedNotice, firstImageFile } from "./lib/notices";
+import { getFeaturedNotices, firstImageFile } from "./lib/notices";
 import { ShieldCheck, Building2, Route, LayoutGrid, Wrench, ArrowRight, Lock } from "lucide-react";
 
 const stats = [
@@ -29,12 +29,14 @@ const works = [
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const featuredNotice = await getFeaturedNotice().catch(() => null);
+  const featuredNotices = await getFeaturedNotices().catch(() => []);
 
   return (
     <>
-      {featuredNotice && (
-        <HomeNoticePopup notice={featuredNotice} image={firstImageFile(featuredNotice.files)} />
+      {featuredNotices.length > 0 && (
+        <HomeNoticePopup
+          items={featuredNotices.map((notice) => ({ notice, image: firstImageFile(notice.files) }))}
+        />
       )}
       <Header />
       <main>

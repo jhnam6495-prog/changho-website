@@ -28,9 +28,9 @@ export async function getNotice(id: string): Promise<Notice | null> {
   return getRecord<Notice>(`${DATA_PREFIX}${id}.json`);
 }
 
-export async function getFeaturedNotice(): Promise<Notice | null> {
+export async function getFeaturedNotices(): Promise<Notice[]> {
   const notices = await listNotices();
-  return notices.find((n) => n.showOnHomepage) ?? null;
+  return notices.filter((n) => n.showOnHomepage);
 }
 
 export function firstImageFile(files: NoticeFile[]): NoticeFile | undefined {
