@@ -31,6 +31,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(jsonResponse);
   } catch (error) {
+    console.error("[blob-upload]", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "업로드 처리 중 오류가 발생했습니다." },
       { status: 400 }
