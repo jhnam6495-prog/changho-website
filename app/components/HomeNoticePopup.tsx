@@ -54,14 +54,15 @@ export default function HomeNoticePopup({ items }: { items: PopupItem[] }) {
       style={{
         position: "fixed", inset: 0, zIndex: 2000,
         background: "rgba(6,23,44,0.6)", display: "flex",
-        alignItems: "center", justifyContent: "center", padding: 20,
+        alignItems: "flex-start", justifyContent: "center", padding: 20, paddingTop: "8vh",
+        overflowY: "auto",
       }}
     >
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: "#fff", borderRadius: 16, width: "min(440px, 100%)", maxHeight: "85vh",
-          display: "flex", flexDirection: "column", overflow: "hidden",
+          background: "#fff", borderRadius: 16, width: "min(440px, 100%)", maxHeight: "80vh",
+          display: "flex", flexDirection: "column", overflow: "hidden", flexShrink: 0,
           boxShadow: "0 24px 60px rgba(0,0,0,0.35)",
         }}
       >
