@@ -60,7 +60,7 @@ export default function BlobFileInput({
     try {
       const uploaded: UploadedFile[] = [];
       for (const file of selected) {
-        const pathname = `${pathPrefix}/${Date.now()}-${file.name}`;
+        const pathname = `${pathPrefix}/${Date.now()}-${encodeURIComponent(file.name)}`;
         const blob = await uploadPresigned(pathname, file, {
           access: "public",
           handleUploadUrl: "/api/blob-upload/",
